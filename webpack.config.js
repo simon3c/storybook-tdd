@@ -1,6 +1,12 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const path = require('path');
+
+function resolve(dir) {
+    return path.join(__dirname, dir)
+}
 
 module.exports = {
     mode: 'development',
@@ -14,13 +20,32 @@ module.exports = {
             },
             {
                 test: /\.vue$/,
-                exclude: /node_modules/,
                 loader: "vue-loader"
             },
             {
-                test: /\.css$/,
-                exclude: /node_modules/,
-                use: ['vue-style-loader', 'css-loader']
+                test: /\.(sa|sc|c)ss$/,
+                use: [
+                    'vue-style-loader',
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+              test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+              loader: 'url-loader',
+              options: {
+                limit: 10000,
+                name: 'content/[hash].[ext]'
+              }
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                  limit: 10000,
+                  name: 'content/[hash].[ext]'
+                }
             }
         ]
     },
@@ -33,6 +58,16 @@ module.exports = {
             template: './index.html'
         }),
         new VueLoaderPlugin(),
+        new CopyWebpackPlugin([
+            { from: './public/' }
+        ]),
         new webpack.HotModuleReplacementPlugin()
-    ]
+    ],
+    resolve: {
+        extensions: ['.ts', '.js', '.vue', '.json', '.css'],
+        alias: {
+            vue$: 'vue/dist/vue.esm.js',
+            '@': resolve('src')
+        }
+    }
 };
