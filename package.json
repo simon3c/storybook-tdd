@@ -2,17 +2,17 @@
   "name": "vue-webpack",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "clean": "rimraf dist",
-    "build": "npm run clean && webpack --mode production",
-    "serve": "webpack-dev-server --mode development",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
+  "scripts": {
+    "serve": "webpack-dev-server --mode development",
+    "build": "npm run clean && webpack --mode production",
+    "test:unit": "vue-cli-service test:unit",
+    "build-storybook": "build-storybook",
+    "clean": "rimraf dist",
+    "storybook": "start-storybook -p 6006"
+  },
+  "main": "index.js",
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
@@ -23,6 +23,8 @@
     "@storybook/addon-links": "^5.3.9",
     "@storybook/addons": "^5.3.9",
     "@storybook/vue": "^5.3.9",
+    "@vue/cli-plugin-unit-jest": "^4.1.2",
+    "@vue/cli-service": "^4.1.2",
     "@vue/test-utils": "^1.0.0-beta.31",
     "axios": "^0.19.2",
     "babel-loader": "^8.0.6",
@@ -66,5 +68,12 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
   },
-  "dependencies": {}
+  "jest": {
+    "moduleNameMapper": {
+      "@(.*)$": "<rootDir>/src/$1",
+      "^vue$": "vue/dist/vue.common.js"
+    }
+  },
+  "keywords": [],
+  "license": "ISC"
 }
